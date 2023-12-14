@@ -227,6 +227,14 @@ class CycloneDXParser(object):
         vuln_id = vulnerability.findtext("b:id", namespaces=ns)
 
         description = vulnerability.findtext("b:description", namespaces=ns)
+        if not description:
+            description = "\n".join(
+                [
+                    f"**Ref:** {ref}",
+                    f"**Id:** {vuln_id}",
+                    f"**Severity:** {str(severity)}",
+                ]
+            )
         detail = vulnerability.findtext("b:detail", namespaces=ns)
         if detail:
             if description:
@@ -384,6 +392,14 @@ class CycloneDXParser(object):
         findings = []
         for vulnerability in data.get("vulnerabilities", []):
             description = vulnerability.get("description")
+            if not description:
+                description = "\n".join(
+                    [
+                        f"**Ref:** {ref}",
+                        f"**Id:** {vuln_id}",
+                        f"**Severity:** {str(severity)}",
+                    ]
+                )
             detail = vulnerability.get("detail")
             if detail:
                 if description:
